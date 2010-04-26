@@ -8,10 +8,28 @@
     <script type="text/javascript">
         $(function () { 
             
+            $("#showcase2").showcase();
+            
+            $("#showcase").showcase({
+                images: [
+                { url: "images/slide1.jpg" },
+                { url: "images/slide2.jpg" },
+                { url: "images/slide3.jpg" },
+                { url: "images/slide4.jpg" },
+                { url: "images/slide5.jpg" }]
+            });
         });
     </script>
 </head>
 <body>
+    <div id="showcase"></div>
     
+    <div id="showcase2">
+        <a><img src="images/slide1.jpg" /></a>
+        <a><img src="images/slide2.jpg" /></a>
+        <a><img src="images/slide3.jpg" /></a>
+        <a><img src="images/slide4.jpg" /></a>
+        <a><img src="images/slide5.jpg" /></a>
+    </div>
 </body>
 </html>

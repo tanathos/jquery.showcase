@@ -2,6 +2,7 @@
 // Eros Fratini - eros@recoding.it
 // jquery.showcase 2.0.1
 //
+// 26/04/2010 - Begin some changes
 // 02/02/2010 - Wow, a fix about 10 minute after release....
 // 02/02/2010 - Debugging and demos
 // 27/12/2009 - Optimized animation, added functions to pause and resume autocycling
@@ -18,6 +19,7 @@
 (function($) {
     $.fn.showcase = function (options) {
         var $container = this;
+        
         // Retrieve options
         var opt;
         opt = $.extend({}, $.fn.showcase.defaults, options);
@@ -80,6 +82,9 @@
             if (options.titleBar.css) { opt.titleBar.css = $.extend({}, $.fn.showcase.defaults.titleBar.css, options.titleBar.css);  }
         }
         
+        // Setup of container
+        $container.css(opt.css);
+        
         // Check loading mode.
         // If there's something in opt.images[], I'll load them asynchronously, 
         // it will be nice to have width and height setted, in order to define the $container sizes
@@ -105,7 +110,7 @@
             });
         }
 		
-		// functions to control the palyback of showcase
+		// functions to control the playback of showcase
 		$.fn.extend({
 			pause: function() { $container.data("stopped", true); },
 			go: function() { $container.data("stopped", false); }
@@ -123,10 +128,10 @@
 		opt.css.width = imagesize.width;
 		opt.css.height = imagesize.height;
 		
-        // setup container
-		$container.css(opt.css)
-            .find("a").css({ position: "absolute", top: "0", left: "0" })
-                .find("img").css("border", "0px");
+        // Redefine size of container
+        $container.css({ width: opt.css.width, height: opt.css.height });
+		$container.find("a").css({ position: "absolute", top: "0", left: "0" })
+                  .find("img").css("border", "0px");
     
     	// setup navigator
         var $slider = $("<div id='slider' />").css({ position:"absolute" });
