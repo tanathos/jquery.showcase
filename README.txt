@@ -1,5 +1,8 @@
 /* jQuery.showcase plugin */
-
 jQuery.showcase is a light-weight, highly-customizable slideshow plugin for jQuery.
 
-/* 23/02/2010 - Eros Fratini - eros@recoding.it */
+Changelog:
+- 2010-11-02	- Fixed and issue with jQuery 1.4.3 (thanks to F.Rizzi for the feedback)
+				- Added packed version
+
+/* Eros Fratini - eros@recoding.it */

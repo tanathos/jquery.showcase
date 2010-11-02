@@ -1,7 +1,8 @@
 ﻿// -----------------------------------------------------------------------
 // Eros Fratini - eros@recoding.it
-// jquery.showcase 2.0.1
+// jquery.showcase 2.0.2
 //
+// 02/11/2010 - Fixed and issue with jQuery 1.4.3, some tests with IE9 beta
 // 26/04/2010 - Begin some changes
 // 02/02/2010 - Wow, a fix about 10 minute after release....
 // 02/02/2010 - Debugging and demos
@@ -14,7 +15,7 @@
 // 19/06/2009 - standardization
 // 08/06/2009 - Initial sketch
 //
-// requires jQuery 1.3.x
+// requires jQuery 1.3.x+
 //------------------------------------------------------------------------
 (function($) {
     $.fn.showcase = function (options) {
@@ -115,7 +116,7 @@
 			pause: function() { $container.data("stopped", true); },
 			go: function() { $container.data("stopped", false); }
 		}) 
-    }
+    };
 
 	// This will start all showcase's stuffs
     $.fn.showcase.start = function($container, opt) {
@@ -149,6 +150,23 @@
                 break;
         }
         
+        $container.append($divNavigator).hover(
+            function() { 
+                if (opt.titleBar.autoHide && opt.titleBar.enabled) {
+                    $($titleBar).stop().animate({ opacity: opt.titleBar.css.opacity, left: 0, right: 0, height: opt.titleBar.css.height }, 250);
+                }
+                if (opt.navigator.autoHide) { $($divNavigator).stop().animate({ opacity: 1 }, 250); }
+                $(this).data("isMouseHover", true);
+            },
+            function() { 
+                if (opt.titleBar.autoHide && opt.titleBar.enabled) {
+                    $titleBar.stop().animate({ opacity: 0, height: "0px" }, 400); 
+                }
+                if (opt.navigator.autoHide) { $divNavigator.stop().animate({ opacity: 0 }, 250); }
+                $(this).data("isMouseHover", false);
+            }
+        );
+
         $container.find("a").wrapAll($slider).each( function(i) {
             switch (opt.animation.type)
             { 
@@ -200,41 +218,24 @@
             }
 			
 			switch (opt.navigator.orientation) 
-                {
-                    case "horizontal":
-                        $navElement.css("float", "left");
-                        break;
-                    case "vertical":
-                        $navElement.css("float", "none");
-                        break;    
-                }
+            {
+                case "horizontal":
+                    $navElement.css("float", "left");
+                    break;
+                case "vertical":
+                    $navElement.css("float", "none");
+                    break;    
+            }
             
             if (opt.navigator.showMiniature) {
-                $("<img />").attr({ src: $(this).find("img").attr("src"), width: $navElement.css("width").replace("px", ""), height: $navElement.css("height").replace("px", ""), border: "0px" }).appendTo($navElement);
+                $("<img />").attr({ src: $("img", this).attr("src"), width: $navElement.innerWidth(), height: $navElement.innerHeight(), border: "0px" }).appendTo($navElement);
             }
         });
         
         if (opt.navigator.autoHide) {
             $divNavigator.css("opacity", 0);
         }
-        
-        $container.append($divNavigator).hover(
-            function() { 
-                if (opt.titleBar.autoHide && opt.titleBar.enabled) {
-                    $($titleBar).stop().animate({ opacity: opt.titleBar.css.opacity, left: 0, right: 0, height: opt.titleBar.css.height }, 250);
-                }
-                if (opt.navigator.autoHide) { $($divNavigator).stop().animate({ opacity: 1 }, 250); }
-                $(this).data("isMouseHover", true);
-            },
-            function() { 
-                if (opt.titleBar.autoHide && opt.titleBar.enabled) {
-                    $titleBar.stop().animate({ opacity: 0, height: "0px" }, 400); 
-                }
-                if (opt.navigator.autoHide) { $divNavigator.stop().animate({ opacity: 0 }, 250); }
-                $(this).data("isMouseHover", false);
-            }
-        );
-        
+
         // Create titleBar
 		if (opt.titleBar.enabled) {
 			if (opt.linksOn == "images")
@@ -244,7 +245,7 @@
 			else 
 			{
 				var $a = $("<a />").attr("href", $container.find("a:first").attr("href")).html("<span>" + $container.find("a:first img").attr("alt") + "</span>");
-				var $titleBar = $("<div id='subBar' />").html($a)
+				var $titleBar = $("<div id='subBar' />").html($a);
 
 				$container.find("#slider a").each( function() {
 					$(this).attr("rel", $(this).attr("href"));
@@ -283,7 +284,7 @@
         if (opt.animation.autoCycle) {
             opt.animation.intervalID = showcaseCycler(index, nImages, $container, imagesize, opt);
         }
-    }
+    };
     
 	var showcaseCycler = function(index, nImages, $container, imagesize, opt) {
 		return setInterval( function() { 
@@ -392,6 +393,7 @@
 								backgroundColor: "#878787",
 								margin: "0px 3px 3px 0px",
 								border: "solid 1px #acacac",
+                                "border-radius": "4px",
 								"-moz-border-radius": "4px",
 								"-webkit-border-radius": "4px" },
 							cssHover: {
@@ -416,5 +418,4 @@
 		                   	fontWeight: "bold",
 		                   	fontSize: "1em" } }
 	};
-	
 })(jQuery);
