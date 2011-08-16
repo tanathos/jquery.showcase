@@ -91,7 +91,7 @@
         // it will be nice to have width and height setted, in order to define the $container sizes
         if (opt.images.length != 0) {
             $container.css({ width: opt.css.width, height: opt.css.height, overflow: "hidden" });
-            for (var i in opt.images) {
+            for(var i = 0; i < opt.images.length; i++) {
                 var img = new Image();
                 img.src = opt.images[i].url;
                 img.alt = opt.images[i].description || "";
